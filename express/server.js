@@ -76,11 +76,12 @@ router.post("/create-checkout-session", async (req, res) => {
     }/success.html?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${url ? url : domainURL}/canceled.html`,
   });
-  res.set({
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers":
-      "Origin, X-Requested-With, Content-Type, Accept",
-  });
+
+  res.append("Access-Control-Allow-Origin", "*");
+  res.append(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
 
   res.send({
     sessionId: session.id,

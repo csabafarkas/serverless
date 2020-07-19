@@ -4,6 +4,7 @@ const path = require("path");
 const serverless = require("serverless-http");
 const app = express();
 const bodyParser = require("body-parser");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const router = express.Router();
 router.get("/", (req, res) => {
@@ -27,6 +28,30 @@ app.use(
 app.use(bodyParser.json());
 app.use("/.netlify/functions/server", router); // path must route to lambda
 app.use("/", (req, res) => res.sendFile(path.join(__dirname, "../index.html")));
+
+app.get("/config", async (req, res) => {
+  const productsAll = await stripe.products.list();
+  const pricesAll = await stripe.prices.list();
+
+  const productsWithPrices = productsAll.data.map((p, i) => {
+    const price = pricesAll.data.find((pr) => pr.product === p.id);
+    return {
+      unitAmount: price.unit_amount,
+      currency: price.currency,
+      productName: p.name,
+      productDescription: p.description,
+      id: price.id,
+      images: p.images,
+    };
+  });
+
+  console.log(productsWithPrices);
+
+  res.send({
+    publicKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    products: productsWithPrices,
+  });
+});
 
 module.exports = app;
 module.exports.handler = serverless(app);

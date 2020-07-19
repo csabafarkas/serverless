@@ -28,7 +28,11 @@ router.get("/config", async (req, res) => {
       images: p.images,
     };
   });
-
+  res.set({
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers":
+      "Origin, X-Requested-With, Content-Type, Accept",
+  });
   res.send({
     publicKey: process.env.STRIPE_PUBLISHABLE_KEY,
     products: productsWithPrices,

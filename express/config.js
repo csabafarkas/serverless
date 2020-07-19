@@ -12,25 +12,6 @@ const router = express.Router();
 //   res.write("<h1>Hello from Express.js!</h1>");
 //   res.end();
 // });
-router.get("/another", (req, res) => res.json({ route: req.originalUrl }));
-router.post("/", (req, res) => res.json({ postBody: req.body }));
-app.use(
-  express.json({
-    // We need the raw body to verify webhook signatures.
-    // Let's compute it only when hitting the Stripe webhook endpoint.
-    verify: function (req, res, buf) {
-      if (req.originalUrl.startsWith("/webhook")) {
-        req.rawBody = buf.toString();
-      }
-    },
-  })
-);
-app.use(bodyParser.json());
-app.use("/.netlify/functions/server", router); // path must route to lambda
-// app.use("/", (req, res) => res.sendFile(path.join(__dirname, "../index.html")));
-
-// app.use("/users", (req, res) => res.send({ user: "Csaba" }));
-
 app.get("/", async (req, res) => {
   const productsAll = await stripe.products.list();
   const pricesAll = await stripe.prices.list();
@@ -54,6 +35,22 @@ app.get("/", async (req, res) => {
     products: productsWithPrices,
   });
 });
+router.get("/another", (req, res) => res.json({ route: req.originalUrl }));
+router.post("/", (req, res) => res.json({ postBody: req.body }));
+app.use(
+  express.json({
+    // We need the raw body to verify webhook signatures.
+    // Let's compute it only when hitting the Stripe webhook endpoint.
+    verify: function (req, res, buf) {
+      if (req.originalUrl.startsWith("/webhook")) {
+        req.rawBody = buf.toString();
+      }
+    },
+  })
+);
+app.use(bodyParser.json());
+app.use("/.netlify/functions/server", router); // path must route to lambda
+app.use("/", (req, res) => res.sendFile(path.join(__dirname, "../index.html")));
 
 module.exports = app;
 module.exports.handler = serverless(app);

@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
   res.end();
 });
 router.get("/another", (req, res) => res.json({ route: req.originalUrl }));
-app.get("/config", async (req, res) => {
+router.get("/config", async (req, res) => {
   const productsAll = await stripe.products.list();
   const pricesAll = await stripe.prices.list();
 

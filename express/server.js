@@ -29,6 +29,8 @@ app.use(bodyParser.json());
 app.use("/.netlify/functions/server", router); // path must route to lambda
 app.use("/", (req, res) => res.sendFile(path.join(__dirname, "../index.html")));
 
+app.use("/users", (req, res) => res.send({ user: "Csaba" }));
+
 app.get("/config", async (req, res) => {
   const productsAll = await stripe.products.list();
   const pricesAll = await stripe.prices.list();

@@ -42,6 +42,11 @@ router.get("/config", async (req, res) => {
 router.get("/checkout-session", async (req, res) => {
   const { sessionId } = req.query;
   const session = await stripe.checkout.sessions.retrieve(sessionId);
+  res.set({
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers":
+      "Origin, X-Requested-With, Content-Type, Accept",
+  });
   res.send(session);
 });
 
@@ -70,6 +75,11 @@ router.post("/create-checkout-session", async (req, res) => {
       url ? url : domainURL
     }/success.html?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${url ? url : domainURL}/canceled.html`,
+  });
+  res.set({
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers":
+      "Origin, X-Requested-With, Content-Type, Accept",
   });
 
   res.send({

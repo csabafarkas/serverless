@@ -1,7 +1,7 @@
 {
   "name": "netlify-express",
   "version": "0.0.1",
-  "description": "Example of how to deploy a Express.js Netlify app.",
+  "description": "",
   "main": "functions/server.js",
   "scripts": {
     "build": "netlify-lambda build express",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neverendingqs/netlify-express.git"
+    "url": ""
   },
   "keywords": [
     "netlify",
@@ -18,10 +18,12 @@
   "author": "neverendingqs",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/neverendingqs/netlify-express/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/neverendingqs/netlify-express#readme",
-  "dependencies": {},
+  "homepage": "",
+  "dependencies": {
+    "stripe": "^8.5.0"
+  },
   "devDependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",

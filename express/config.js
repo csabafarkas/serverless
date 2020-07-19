@@ -7,11 +7,11 @@ const bodyParser = require("body-parser");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const router = express.Router();
-router.get("/", (req, res) => {
-  res.writeHead(200, { "Content-Type": "text/html" });
-  res.write("<h1>Hello from Express.js!</h1>");
-  res.end();
-});
+// router.get("/", (req, res) => {
+//   res.writeHead(200, { "Content-Type": "text/html" });
+//   res.write("<h1>Hello from Express.js!</h1>");
+//   res.end();
+// });
 router.get("/another", (req, res) => res.json({ route: req.originalUrl }));
 router.post("/", (req, res) => res.json({ postBody: req.body }));
 app.use(
@@ -31,7 +31,7 @@ app.use("/.netlify/functions/server", router); // path must route to lambda
 
 // app.use("/users", (req, res) => res.send({ user: "Csaba" }));
 
-app.get("/config", async (req, res) => {
+app.get("/", async (req, res) => {
   const productsAll = await stripe.products.list();
   const pricesAll = await stripe.prices.list();
 
